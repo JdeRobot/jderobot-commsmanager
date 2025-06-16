@@ -1,0 +1,5 @@
+src/
+.github/
+tsconfig.json
+webpack.config.js
+package-lock.json
