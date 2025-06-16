@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "baseUrl": ".",
+    "rootDir": "./src",
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "paths": {
+      "Utils": [
+        "src/utils"
+      ],
+      "Types": [
+        "src/types"
+      ],
+    }
+  },
+  "include": [
+    "src",
+    "svg.d.ts"
+  ]
+}
