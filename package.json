@@ -1,11 +1,11 @@
 {
   "name": "jderobot-commsmanager",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "dist/main.js",
   "typings": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\"",
-    "build": "webpack --mode production --config webpack.config.js",
+    "build": "webpack --mode development --config webpack.config.js",
     "postbuild": "cp package.json dist"
   },
   "files": ["dist"],
