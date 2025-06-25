@@ -1,4 +1,3 @@
-
 export type PromiseHandlers = {
   resolve: (value?: any) => void;
   reject: (reason?: any) => void;
@@ -22,7 +21,6 @@ export interface RobotConfig {
   name: string | null;
   launch_file_path: string | null;
   ros_version: string | null;
-  visualization: string | null;
   world: string | null;
   start_pose: string | null;
 }
@@ -49,7 +47,7 @@ export const states = {
   IDLE: "idle",
   CONNECTED: "connected",
   WORLD_READY: "world_ready",
-  VISUALIZATION_READY: "visualization_ready",
+  TOOLS_READY: "tools_ready",
   RUNNING: "application_running",
   PAUSED: "paused",
 };

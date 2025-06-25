@@ -6,4 +6,4 @@ export type {
   UniverseConfig,
   Events,
 } from "./types";
-export {events, states} from './types'
+export { events, states } from "./types";
