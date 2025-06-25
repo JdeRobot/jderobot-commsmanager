@@ -208,8 +208,8 @@ export default class CommsManager {
     return this.send("terminate_application");
   }
 
-  public terminateVisualization() {
-    return this.send("terminate_visualization");
+  public terminateTools() {
+    return this.send("terminate_tools");
   }
 
   public terminateUniverse() {
