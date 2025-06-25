@@ -1,7 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
 import { publish } from "../utils";
-import { Events, events, ManagerMsg, PromiseHandlers, UniverseConfig } from "../types";
-
+import {
+  Events,
+  events,
+  ManagerMsg,
+  PromiseHandlers,
+  UniverseConfig,
+} from "../types";
 
 export default class CommsManager {
   private static instance: CommsManager | undefined;
@@ -53,7 +58,7 @@ export default class CommsManager {
     this.ws.onclose = (e) => {
       if (e.wasClean) {
         console.log(
-          `Connection with ${address} closed, all suscribers cleared`
+          `Connection with ${address} closed, all suscribers cleared`,
         );
       } else {
         console.log(`Connection with ${address} interrupted`);
@@ -100,7 +105,7 @@ export default class CommsManager {
     for (let i = 0, length = events.length; i < length; i++) {
       this.observers[events[i]] = this.observers[events[i]] || [];
       this.observers[events[i]].splice(
-        this.observers[events[i]].indexOf(callback)
+        this.observers[events[i]].indexOf(callback),
       );
     }
   };
@@ -136,10 +141,10 @@ export default class CommsManager {
   }
 
   private setManagerState(msg: ManagerMsg) {
-    publish("CommsManagerStateChange", {state: msg.data.state})
+    publish("CommsManagerStateChange", { state: msg.data.state });
     CommsManager.state = msg.data.state;
     if (msg.data.state === "connected") {
-      CommsManager.universe = undefined
+      CommsManager.universe = undefined;
     }
   }
 
@@ -165,25 +170,22 @@ export default class CommsManager {
   }
 
   public launchWorld(cfg: UniverseConfig) {
-    CommsManager.universe = cfg.name
+    CommsManager.universe = cfg.name;
     return this.send("launch_world", cfg);
   }
 
-  public prepareVisualization(
-    visualization_type: string,
-    visualization_config: string | null
-  ) {
-    if (visualization_config === null || visualization_config === undefined) {
-      visualization_config = "None";
+  public prepareTools(tools: string[], tools_config: Object) {
+    if (tools_config === null || tools_config === undefined) {
+      tools_config = "None";
     }
-    return this.send("prepare_visualization", {
-      type: visualization_type,
-      file: visualization_config,
+    return this.send("prepare_tools", {
+      tools: tools,
+      config: tools_config,
     });
   }
 
-  public run(cfg: Object) {
-    return this.send("run_application", cfg);
+  public run(entrypoint: string, code: string) {
+    return this.send("run_application", { entrypoint: entrypoint, code: code });
   }
 
   public stop() {
