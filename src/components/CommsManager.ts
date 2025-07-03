@@ -175,9 +175,6 @@ export default class CommsManager {
   }
 
   public prepareTools(tools: string[], tools_config: Object) {
-    if (tools_config === null || tools_config === undefined) {
-      tools_config = "None";
-    }
     return this.send("prepare_tools", {
       tools: tools,
       config: tools_config,
