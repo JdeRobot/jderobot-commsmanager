@@ -58,7 +58,7 @@ export default class CommsManager {
     this.ws.onclose = (e) => {
       if (e.wasClean) {
         console.log(
-          `Connection with ${address} closed, all suscribers cleared`,
+          `Connection with ${address} closed, all suscribers cleared`
         );
       } else {
         console.log(`Connection with ${address} interrupted`);
@@ -105,7 +105,7 @@ export default class CommsManager {
     for (let i = 0, length = events.length; i < length; i++) {
       this.observers[events[i]] = this.observers[events[i]] || [];
       this.observers[events[i]].splice(
-        this.observers[events[i]].indexOf(callback),
+        this.observers[events[i]].indexOf(callback)
       );
     }
   };
@@ -181,8 +181,12 @@ export default class CommsManager {
     });
   }
 
-  public run(entrypoint: string, code: string) {
-    return this.send("run_application", { entrypoint: entrypoint, code: code });
+  public run(entrypoint: string, to_lint: string[], code: string) {
+    return this.send("run_application", {
+      entrypoint: entrypoint,
+      linter: to_lint,
+      code: code,
+    });
   }
 
   public stop() {
