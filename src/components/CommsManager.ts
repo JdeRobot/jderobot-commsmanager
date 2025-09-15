@@ -67,9 +67,10 @@ export default class CommsManager {
   }
 
   // Singleton behavior
-  public static getInstance(): CommsManager {
+  public static getInstance(address?: string): CommsManager {
+    const newAddress = address ? address : "ws://127.0.0.1:7163"
     if (!CommsManager.instance) {
-      CommsManager.instance = new CommsManager("ws://127.0.0.1:7163");
+      CommsManager.instance = new CommsManager(newAddress);
     }
     return CommsManager.instance;
   }
