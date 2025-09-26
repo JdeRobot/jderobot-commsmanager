@@ -63,8 +63,10 @@ export default class CommsManager {
         );
       } else {
         console.log(`Connection with ${CommsManager.adress} interrupted`);
-        delete CommsManager.instance;
-        CommsManager.instance = new CommsManager();
+        setTimeout(function() {
+          delete CommsManager.instance;
+          CommsManager.instance = new CommsManager();
+        }, 1000);
       }
     };
   }
