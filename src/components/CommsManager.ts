@@ -25,6 +25,11 @@ export default class CommsManager {
   // Private constructor to only allow single instatiation
   private constructor() {
     this.ws = new WebSocket(CommsManager.adress);
+    this.setManagerState({
+      id: "",
+      command: "",
+      data: { state: "idle" },
+    });
     this.subscribe(events.STATE_CHANGED, this.setManagerState);
     this.subscribeOnce(events.INTROSPECTION, this.setHostData);
 
