@@ -63,18 +63,27 @@ export default class CommsManager {
         );
       } else {
         console.log(`Connection with ${CommsManager.adress} interrupted`);
-        setTimeout(function() {
+        setTimeout(function () {
           delete CommsManager.instance;
           CommsManager.instance = new CommsManager();
         }, 1000);
       }
+    };
+
+    this.ws.onerror = (e: any) => {
+      console.error("Socket encountered error: ", e.message, "Closing socket");
+      this.ws.close();
+      setTimeout(function () {
+        delete CommsManager.instance;
+        CommsManager.instance = new CommsManager();
+      }, 1000);
     };
   }
 
   // Singleton behavior
   public static getInstance(address?: string): CommsManager {
     if (!CommsManager.instance) {
-      CommsManager.adress = address ? address : "ws://127.0.0.1:7163"
+      CommsManager.adress = address ? address : "ws://127.0.0.1:7163";
       CommsManager.instance = new CommsManager();
     }
     return CommsManager.instance;
