@@ -14,6 +14,7 @@ export default class CommsManager {
   private observers: { [id: string]: Function[] } = {};
   private pendingPromises: Map<string, PromiseHandlers> = new Map();
   private static state: string = "idle";
+  private static adress: string = "ws://127.0.0.1:7163";
   private static universe?: string;
   private static hostData?: {
     gpu_avaliable: string;
@@ -22,8 +23,8 @@ export default class CommsManager {
   };
 
   // Private constructor to only allow single instatiation
-  private constructor(address: string) {
-    this.ws = new WebSocket(address);
+  private constructor() {
+    this.ws = new WebSocket(CommsManager.adress);
     this.subscribe(events.STATE_CHANGED, this.setManagerState);
     this.subscribeOnce(events.INTROSPECTION, this.setHostData);
 
@@ -58,19 +59,21 @@ export default class CommsManager {
     this.ws.onclose = (e) => {
       if (e.wasClean) {
         console.log(
-          `Connection with ${address} closed, all suscribers cleared`
+          `Connection with ${CommsManager.adress} closed, all suscribers cleared`
         );
       } else {
-        console.log(`Connection with ${address} interrupted`);
+        console.log(`Connection with ${CommsManager.adress} interrupted`);
+        delete CommsManager.instance;
+        CommsManager.instance = new CommsManager();
       }
     };
   }
 
   // Singleton behavior
   public static getInstance(address?: string): CommsManager {
-    const newAddress = address ? address : "ws://127.0.0.1:7163"
     if (!CommsManager.instance) {
-      CommsManager.instance = new CommsManager(newAddress);
+      CommsManager.adress = address ? address : "ws://127.0.0.1:7163"
+      CommsManager.instance = new CommsManager();
     }
     return CommsManager.instance;
   }
