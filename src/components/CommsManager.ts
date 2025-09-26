@@ -69,15 +69,6 @@ export default class CommsManager {
         }, 1000);
       }
     };
-
-    this.ws.onerror = (e: any) => {
-      console.error("Socket encountered error: ", e.message, "Closing socket");
-      this.ws.close();
-      setTimeout(function () {
-        delete CommsManager.instance;
-        CommsManager.instance = new CommsManager();
-      }, 1000);
-    };
   }
 
   // Singleton behavior
