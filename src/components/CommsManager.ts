@@ -25,6 +25,7 @@ export default class CommsManager {
   // Private constructor to only allow single instatiation
   private constructor() {
     try {
+      console.warn("Trying to connect to RAM")
       this.ws = new WebSocket(CommsManager.adress);
     } catch (error) {
       setTimeout(function () {
@@ -33,6 +34,8 @@ export default class CommsManager {
       }, 1000);
       return;
     }
+    console.warn("Connected to RAM")
+
     this.setManagerState({
       id: "",
       command: "",
