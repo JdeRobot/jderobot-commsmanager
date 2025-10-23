@@ -24,7 +24,15 @@ export default class CommsManager {
 
   // Private constructor to only allow single instatiation
   private constructor() {
-    this.ws = new WebSocket(CommsManager.adress);
+    try {
+      this.ws = new WebSocket(CommsManager.adress);
+    } catch (error) {
+      setTimeout(function () {
+        delete CommsManager.instance;
+        CommsManager.instance = new CommsManager();
+      }, 1000);
+      return;
+    }
     this.setManagerState({
       id: "",
       command: "",
