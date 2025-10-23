@@ -24,17 +24,7 @@ export default class CommsManager {
 
   // Private constructor to only allow single instatiation
   private constructor() {
-    try {
-      console.warn("Trying to connect to RAM")
-      this.ws = new WebSocket(CommsManager.adress);
-    } catch (error) {
-      setTimeout(function () {
-        delete CommsManager.instance;
-        CommsManager.instance = new CommsManager();
-      }, 1000);
-      return;
-    }
-    console.warn("Connected to RAM")
+    this.ws = new WebSocket(CommsManager.adress);
 
     this.setManagerState({
       id: "",
@@ -141,6 +131,7 @@ export default class CommsManager {
   // Send messages and manage promises
   public async send(message: string, data?: Object): Promise<any> {
     const id = uuidv4();
+    console.warn("Sending message", this.ws)
 
     // Reject with an Error directly if unable to connect
     if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
