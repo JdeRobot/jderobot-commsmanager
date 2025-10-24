@@ -31,6 +31,8 @@ export default class CommsManager {
       command: "",
       data: { state: "idle" },
     });
+    CommsManager.hostData = undefined;
+    CommsManager.universe = undefined;
     this.subscribe(events.STATE_CHANGED, this.setManagerState);
     this.subscribeOnce(events.INTROSPECTION, this.setHostData);
 
@@ -131,7 +133,6 @@ export default class CommsManager {
   // Send messages and manage promises
   public async send(message: string, data?: Object): Promise<any> {
     const id = uuidv4();
-    console.warn("Sending message", this.ws)
 
     // Reject with an Error directly if unable to connect
     if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
