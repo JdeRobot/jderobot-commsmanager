@@ -14,6 +14,7 @@ export default class CommsManager {
   private observers: { [id: string]: Function[] } = {};
   private pendingPromises: Map<string, PromiseHandlers> = new Map();
   private static state: string = "idle";
+  private static timeoutId?: NodeJS.Timeout;
   private static adress: string = "ws://127.0.0.1:7163";
   private static universe?: string;
   private static hostData?: {
@@ -38,6 +39,11 @@ export default class CommsManager {
 
     // Message callback
     this.ws.onmessage = (event) => {
+      if (CommsManager.timeoutId) {
+        clearTimeout(CommsManager.timeoutId);
+        CommsManager.timeoutId = undefined
+      }
+
       const msg = JSON.parse(event.data);
 
       // Check if the message ID exists in the pending promises map
@@ -72,7 +78,9 @@ export default class CommsManager {
       } else {
         console.log(`Connection with ${CommsManager.adress} interrupted`);
       }
-      setTimeout(function () {
+
+      clearTimeout(CommsManager.timeoutId);
+      CommsManager.timeoutId = setTimeout(function () {
         delete CommsManager.instance;
         CommsManager.instance = new CommsManager();
       }, 1000);
