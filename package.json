@@ -1,6 +1,6 @@
 {
   "name": "jderobot-commsmanager",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "main": "dist/main.js",
   "typings": "dist/index.d.ts",
   "scripts": {

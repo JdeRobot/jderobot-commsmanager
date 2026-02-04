@@ -13,7 +13,7 @@ export default class CommsManager {
   private ws: WebSocket;
   private observers: { [id: string]: Function[] } = {};
   private pendingPromises: Map<string, PromiseHandlers> = new Map();
-  private static timeoutId?: NodeJS.Timeout;
+  private static timeoutId?: number;
   private static state: string = "idle";
   private static adress: string = "ws://127.0.0.1:7163";
   private static universe?: string;
@@ -74,7 +74,7 @@ export default class CommsManager {
         console.log(`Connection with ${CommsManager.adress} interrupted`);
       }
 
-      CommsManager.timeoutId = setTimeout(function () {
+      CommsManager.timeoutId = window.setTimeout(function () {
         delete CommsManager.instance;
         CommsManager.instance = new CommsManager();
       }, 1000);
@@ -95,7 +95,7 @@ export default class CommsManager {
       delete CommsManager.instance;
       CommsManager.instance = undefined;
       if (CommsManager.timeoutId) {
-        clearTimeout(CommsManager.timeoutId);
+        window.clearTimeout(CommsManager.timeoutId);
         CommsManager.timeoutId = undefined;
       }
     }
