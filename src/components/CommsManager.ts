@@ -13,6 +13,7 @@ export default class CommsManager {
   private ws: WebSocket;
   private observers: { [id: string]: Function[] } = {};
   private pendingPromises: Map<string, PromiseHandlers> = new Map();
+  private static timeoutId?: NodeJS.Timeout;
   private static state: string = "idle";
   private static adress: string = "ws://127.0.0.1:7163";
   private static universe?: string;
@@ -67,13 +68,13 @@ export default class CommsManager {
     this.ws.onclose = (e) => {
       if (e.wasClean) {
         console.log(
-          `Connection with ${CommsManager.adress} closed, all suscribers cleared`
+          `Connection with ${CommsManager.adress} closed, all suscribers cleared`,
         );
       } else {
         console.log(`Connection with ${CommsManager.adress} interrupted`);
       }
 
-      setTimeout(function () {
+      CommsManager.timeoutId = setTimeout(function () {
         delete CommsManager.instance;
         CommsManager.instance = new CommsManager();
       }, 1000);
@@ -93,6 +94,10 @@ export default class CommsManager {
     if (CommsManager.instance) {
       delete CommsManager.instance;
       CommsManager.instance = undefined;
+      if (CommsManager.timeoutId) {
+        clearTimeout(CommsManager.timeoutId);
+        CommsManager.timeoutId = undefined;
+      }
     }
   }
 
@@ -120,7 +125,7 @@ export default class CommsManager {
     for (let i = 0, length = events.length; i < length; i++) {
       this.observers[events[i]] = this.observers[events[i]] || [];
       this.observers[events[i]].splice(
-        this.observers[events[i]].indexOf(callback)
+        this.observers[events[i]].indexOf(callback),
       );
     }
   };
