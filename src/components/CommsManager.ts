@@ -91,8 +91,13 @@ export default class CommsManager {
 
   public static deleteInstance() {
     if (CommsManager.instance) {
+      CommsManager.instance.ws.close(); //TODO: test close ws on disconnect
       delete CommsManager.instance;
+
       CommsManager.instance = undefined;
+      CommsManager.hostData = undefined;
+      CommsManager.universe = undefined;
+      CommsManager.state = "idle";
     }
   }
 
