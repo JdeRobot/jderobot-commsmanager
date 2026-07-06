@@ -82,8 +82,8 @@ export default class CommsManager {
 
   // Singleton behavior
   public static getInstance(address?: string): CommsManager {
-    CommsManager.adress = address ? address : "ws://127.0.0.1:7163";
     if (!CommsManager.instance) {
+      CommsManager.adress = address ? address : "ws://127.0.0.1:7163";
       CommsManager.instance = new CommsManager();
     }
     return CommsManager.instance;
@@ -201,7 +201,11 @@ export default class CommsManager {
     });
   }
 
-  public run(entrypoint: string, to_lint: string[], code: string) {
+  public run(entrypoint: string | string[], to_lint: string[], code: string) {
+    if (!Array.isArray(entrypoint)) {
+      entrypoint = [entrypoint];
+    }
+
     return this.send("run_application", {
       entrypoint: entrypoint,
       linter: to_lint,
