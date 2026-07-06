@@ -201,7 +201,11 @@ export default class CommsManager {
     });
   }
 
-  public run(entrypoint: string, to_lint: string[], code: string) {
+  public run(entrypoint: string | string[], to_lint: string[], code: string) {
+    if (!Array.isArray(entrypoint)) {
+      entrypoint = [entrypoint];
+    }
+
     return this.send("run_application", {
       entrypoint: entrypoint,
       linter: to_lint,
