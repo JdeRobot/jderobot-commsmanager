@@ -5,7 +5,7 @@ import {
   events,
   ManagerMsg,
   PromiseHandlers,
-  UniverseConfig,
+  WorldConfig,
 } from "../types";
 
 export default class CommsManager {
@@ -15,7 +15,7 @@ export default class CommsManager {
   private pendingPromises: Map<string, PromiseHandlers> = new Map();
   private static state: string = "idle";
   private static adress: string = "ws://127.0.0.1:7163";
-  private static universe?: string;
+  private static world?: string;
   private static hostData?: {
     gpu_avaliable: string;
     robotics_backend_version: string;
@@ -32,7 +32,7 @@ export default class CommsManager {
       data: { state: "idle" },
     });
     CommsManager.hostData = undefined;
-    CommsManager.universe = undefined;
+    CommsManager.world = undefined;
     this.subscribe(events.STATE_CHANGED, this.setManagerState);
     this.subscribeOnce(events.INTROSPECTION, this.setHostData);
 
@@ -96,7 +96,7 @@ export default class CommsManager {
 
       CommsManager.instance = undefined;
       CommsManager.hostData = undefined;
-      CommsManager.universe = undefined;
+      CommsManager.world = undefined;
       CommsManager.state = "idle";
     }
   }
@@ -164,7 +164,7 @@ export default class CommsManager {
     publish("CommsManagerStateChange", { state: msg.data.state });
     CommsManager.state = msg.data.state;
     if (msg.data.state === "connected") {
-      CommsManager.universe = undefined;
+      CommsManager.world = undefined;
     }
   }
 
@@ -180,8 +180,8 @@ export default class CommsManager {
     return CommsManager.hostData;
   }
 
-  public getUniverse() {
-    return CommsManager.universe;
+  public getWorld() {
+    return CommsManager.world;
   }
 
   // Connect to the ws
@@ -189,8 +189,8 @@ export default class CommsManager {
     return this.send("connect");
   }
 
-  public launchWorld(cfg: UniverseConfig) {
-    CommsManager.universe = cfg.name;
+  public launchWorld(cfg: WorldConfig) {
+    CommsManager.world = cfg.name;
     return this.send("launch_world", cfg);
   }
 
@@ -237,8 +237,8 @@ export default class CommsManager {
     return this.send("terminate_tools");
   }
 
-  public terminateUniverse() {
-    return this.send("terminate_universe");
+  public terminateWorld() {
+    return this.send("terminate_world");
   }
 
   public disconnect() {

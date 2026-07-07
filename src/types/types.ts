@@ -9,7 +9,7 @@ export interface ManagerMsg {
   data: any;
 }
 
-export interface WorldConfig {
+export interface SceneConfig {
   name: string;
   launch_file_path: string;
   ros_version: string;
@@ -25,9 +25,9 @@ export interface RobotConfig {
   start_pose: string | null;
 }
 
-export interface UniverseConfig {
+export interface WorldConfig {
   name: string;
-  world: WorldConfig;
+  scene: SceneConfig;
   robot: RobotConfig;
 }
 

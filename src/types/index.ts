@@ -1,9 +1,9 @@
 export type {
   PromiseHandlers,
   ManagerMsg,
-  WorldConfig,
+  SceneConfig,
   RobotConfig,
-  UniverseConfig,
+  WorldConfig,
   Events,
 } from "./types";
 export { events, states } from "./types";
