@@ -28,7 +28,7 @@ export interface RobotConfig {
 export interface WorldConfig {
   name: string;
   scene: SceneConfig;
-  robot: RobotConfig;
+  robot: RobotConfig[];
 }
 
 export type Events = string | string[];
