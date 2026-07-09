@@ -1,6 +1,6 @@
 {
   "name": "jderobot-commsmanager",
-  "version": "1.0.28",
+  "version": "1.1.0",
   "main": "dist/main.js",
   "typings": "dist/index.d.ts",
   "scripts": {
@@ -17,12 +17,12 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "uuid": "^11.1.0"
+    "uuid": "^14.0.1"
   },
   "devDependencies": {
     "prettier": "^3.6.1",
     "ts-loader": "^9.5.2",
-    "typescript": "^5.8.3",
-    "webpack-cli": "^5.1.4"
+    "typescript": "^7.0.2",
+    "webpack-cli": "^7.2.1"
   }
 }
