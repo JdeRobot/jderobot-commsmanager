@@ -1,11 +1,11 @@
 {
   "name": "jderobot-commsmanager",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "dist/main.js",
   "typings": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\"",
-    "build": "webpack --mode development --config webpack.config.js",
+    "build": "webpack --mode production --config webpack.config.js",
     "postbuild": "cp package.json dist",
     "format": "prettier --write src/**/*.{ts,tsx}"
   },
@@ -17,7 +17,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "uuid": "^14.0.1"
+    "uuid": "^14.0.1",
+    "websocket-ts": "^2.3.0"
   },
   "devDependencies": {
     "prettier": "^3.6.1",

@@ -1,5 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
-import { publish } from "../utils";
+import {
+  ConstantBackoff,
+  Websocket,
+  WebsocketBuilder
+} from "websocket-ts";
 import {
   Events,
   events,
@@ -7,10 +11,11 @@ import {
   PromiseHandlers,
   WorldConfig,
 } from "../types";
+import { publish } from "../utils";
 
 export default class CommsManager {
   private static instance: CommsManager | undefined;
-  private ws: WebSocket;
+  private ws: Websocket;
   private observers: { [id: string]: Function[] } = {};
   private pendingPromises: Map<string, PromiseHandlers> = new Map();
   private static state: string = "idle";
@@ -24,8 +29,6 @@ export default class CommsManager {
 
   // Private constructor to only allow single instatiation
   private constructor() {
-    this.ws = new WebSocket(CommsManager.adress);
-
     this.setManagerState({
       id: "",
       command: "",
@@ -37,7 +40,7 @@ export default class CommsManager {
     this.subscribeOnce(events.INTROSPECTION, this.setHostData);
 
     // Message callback
-    this.ws.onmessage = (event) => {
+    const onMessage = (i:Websocket,event:MessageEvent) => {
       const msg = JSON.parse(event.data);
 
       // Check if the message ID exists in the pending promises map
@@ -64,20 +67,21 @@ export default class CommsManager {
     };
 
     // Closing callback
-    this.ws.onclose = (e) => {
-      if (e.wasClean) {
+    const onClose = (i:Websocket, event:CloseEvent) => {
+      if (event.wasClean) {
         console.log(
           `Connection with ${CommsManager.adress} closed, all suscribers cleared`,
         );
       } else {
         console.log(`Connection with ${CommsManager.adress} interrupted`);
       }
-
-      window.setTimeout(function () {
-        delete CommsManager.instance;
-        CommsManager.instance = new CommsManager();
-      }, 1000);
     };
+
+    this.ws = new WebsocketBuilder(CommsManager.adress)
+      .onClose(onClose)
+      .onMessage(onMessage)
+      .withBackoff(new ConstantBackoff(1000)) // 1000ms = 1s
+      .build();
   }
 
   // Singleton behavior
